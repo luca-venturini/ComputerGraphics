@@ -126,6 +126,8 @@ M1_indices[35] = 7;
 // Resizes the vertices array. Repalce the values with the correct number of
 // vertices components (3 * number of vertices)
 
+/*******
+
 int slices = 4;
 M2_vertices.resize(3*(slices+1)*2);
 
@@ -168,6 +170,8 @@ for(int i = 0, j = 0; i<slices; i=i+1, j=j+3){
 }
 
 
+******/
+
 /*
 // indices definitions
 for(int i = 0; i<4; i=i+3){
@@ -178,7 +182,87 @@ for(int i = 0; i<4; i=i+3){
 */
 
 
+/******* copy 2 *******/
 
+
+//// M2 : Cylinder
+// Replace the code below, that creates a simple rotated square, with the one to create a cylinder.
+
+// Resizes the vertices array. Repalce the values with the correct number of
+// vertices components (3 * number of vertices)
+
+int Nslices = 72;
+float radious = 1;
+float height = 1;
+float cx = 0, cy = 0, cz = 0;
+float PI = 3.1415;
+
+M2_vertices.resize(((Nslices+1)*3)*2);
+
+M2_vertices[0] = cx;
+M2_vertices[1] = cy + height;
+M2_vertices[2] = cz;
+
+
+for (int i = 0; i<Nslices; i++){
+    M2_vertices[(i+1)*3 + 0] = cx + radious * cos((float)i/Nslices * 2.0 * PI);
+    M2_vertices[(i+1)*3 + 1] = cy + height;
+    M2_vertices[(i+1)*3 + 2] = cz + radious * sin((float)i/Nslices * 2.0 * PI);
+    std::cout << "X: " << M2_vertices[(i+1)*3 + 0] << " - Y: " << M2_vertices[(i+1)*3 + 1] << " - Z:" << M2_vertices[(i+1)*3 + 2] << "\n";
+}
+
+M2_vertices[((Nslices+1)*3)] = cx;
+M2_vertices[((Nslices+1)*3) + 1] = cy - height;
+M2_vertices[((Nslices+1)*3) + 2] = cz;
+
+std::cout << "\n\n";
+
+for (int i = 0; i<Nslices; i++){
+    M2_vertices[((Nslices+1)*3) + (i+1)*3 + 0] = cx + radious * cos((float)i/Nslices * 2.0 * PI);
+    M2_vertices[((Nslices+1)*3) + (i+1)*3 + 1] = cy - height;
+    M2_vertices[((Nslices+1)*3) + (i+1)*3 + 2] = cz + radious * sin((float)i/Nslices * 2.0 * PI);
+    std::cout << "X: " << M2_vertices[((Nslices+1)*3) + (i+1)*3 + 0] << " - Y: " << M2_vertices[((Nslices+1)*3) + (i+1)*3 + 1] << " - Z:" << M2_vertices[((Nslices+1)*3) + (i+1)*3 + 2] << "\n";
+}
+
+
+// Resizes the indices array. Repalce the values with the correct number of
+// indices (3 * number of triangles)
+M2_indices.resize((3 * Nslices)*2 + Nslices*3*2);
+
+//upper circle
+for(int i = 0; i<Nslices; i++){
+    M2_indices[i*3 + 0] = 0;
+    M2_indices[i*3 + 1] = i+1;
+    M2_indices[i*3 + 2] = (i+1)%Nslices+1;
+}
+
+//lower circle
+for(int i = 0; i<Nslices; i++){
+    M2_indices[3 * Nslices + i*3 + 0] = (Nslices+1) + 0;
+    M2_indices[3 * Nslices + i*3 + 1] = (Nslices+1) + i+1;
+    M2_indices[3 * Nslices + i*3 + 2] = (Nslices+1) + (i+1)%Nslices+1;
+}
+
+//side 1
+for(int i = 0; i<Nslices; i++){
+    M2_indices[2 * 3 * Nslices + i*3 + 0] = i + 1;
+    M2_indices[2 * 3 * Nslices + i*3 + 1] = (i+1)%Nslices + 1;
+    M2_indices[2 * 3 * Nslices + i*3 + 2] = i + 1 + Nslices + 1;
+}
+
+//side 2, to be completed
+for(int i = 0; i<Nslices; i++){
+    M2_indices[3 * 3 * Nslices + i*3 + 0] = (Nslices+1) + i + 1;
+    M2_indices[3 * 3 * Nslices + i*3 + 1] = (Nslices+1) + (i+1)%Nslices + 1;
+    M2_indices[3 * 3 * Nslices + i*3 + 2] = (i+1)%Nslices + 1;
+}
+
+
+
+// indices definitions
+
+
+/******* end copy 2 ***/
 
 
 
@@ -188,6 +272,10 @@ for(int i = 0; i<4; i=i+3){
 
 //// M3 : Sphere
 // Replace the code below, that creates a simple triangle, with the one to create a sphere.
+
+// Parto con origine == centro sfera
+// altezza_massima == raggio
+// per ogni punto intermedio dell'altezza, ho che raggio = sqrt(R^2-z^2)
 
 // Resizes the vertices array. Repalce the values with the correct number of
 // vertices components (3 * number of vertices)
