@@ -17,38 +17,167 @@ void makeModels() {
 
 // Resizes the vertices array. Repalce the values with the correct number of
 // vertices
-M1_vertices.resize(4);
+M1_vertices.resize(4*6);
 
-// first vertex of M1
+
+// front z
+
 M1_vertices[0].pos  = glm::vec3(-1.0,-1.0,-1.0);
 M1_vertices[0].norm = glm::vec3(0.0,0.0,1.0);
 
-// second vertex of M1
 M1_vertices[1].pos  = glm::vec3(1.0,-1.0,-1.0);
 M1_vertices[1].norm = glm::vec3(0.0,0.0,1.0);
 
-// third vertex of M1
 M1_vertices[2].pos  = glm::vec3(1.0,1.0,-1.0);
 M1_vertices[2].norm = glm::vec3(0.0,0.0,1.0);
 
-// fourth vertex of M1
 M1_vertices[3].pos  = glm::vec3(-1.0,1.0,-1.0);
 M1_vertices[3].norm = glm::vec3(0.0,0.0,1.0);
 
 
+// back z
+
+M1_vertices[4].pos  = glm::vec3(-1.0,-1.0,-3.0);
+M1_vertices[4].norm = glm::vec3(0.0,0.0,-1.0);
+
+M1_vertices[5].pos  = glm::vec3(1.0,-1.0,-3.0);
+M1_vertices[5].norm = glm::vec3(0.0,0.0,-1.0);
+
+M1_vertices[6].pos  = glm::vec3(1.0,1.0,-3.0);
+M1_vertices[6].norm = glm::vec3(0.0,0.0,-1.0);
+
+M1_vertices[7].pos  = glm::vec3(-1.0,1.0,-3.0);
+M1_vertices[7].norm = glm::vec3(0.0,0.0,-1.0);
+
+
+// front x
+
+M1_vertices[8].pos  = glm::vec3(1.0,-1.0,-1.0);
+M1_vertices[8].norm = glm::vec3(1.0,0.0,0.0);
+
+M1_vertices[9].pos  = glm::vec3(1.0,-1.0,-3.0);
+M1_vertices[9].norm = glm::vec3(1.0,0.0,0.0);
+
+M1_vertices[10].pos  = glm::vec3(1.0,1.0,-3.0);
+M1_vertices[10].norm = glm::vec3(1.0,0.0,0.0);
+
+M1_vertices[11].pos  = glm::vec3(1.0,1.0,-1.0);
+M1_vertices[11].norm = glm::vec3(1.0,0.0,0.0);
+
+
+// back x
+
+M1_vertices[12].pos  = glm::vec3(-1.0,-1.0,-1.0);
+M1_vertices[12].norm = glm::vec3(-1.0,0.0,0.0);
+
+M1_vertices[13].pos  = glm::vec3(-1.0,-1.0,-3.0);
+M1_vertices[13].norm = glm::vec3(-1.0,0.0,0.0);
+
+M1_vertices[14].pos  = glm::vec3(-1.0,1.0,-3.0);
+M1_vertices[14].norm = glm::vec3(-1.0,0.0,0.0);
+
+M1_vertices[15].pos  = glm::vec3(-1.0,1.0,-1.0);
+M1_vertices[15].norm = glm::vec3(-1.0,0.0,0.0);
+
+
+// front y
+
+M1_vertices[16].pos  = glm::vec3(-1.0,1.0,-1.0);
+M1_vertices[16].norm = glm::vec3(.0,1.0,0.0);
+
+M1_vertices[17].pos  = glm::vec3(1.0,1.0,-1.0);
+M1_vertices[17].norm = glm::vec3(.0,1.0,0.0);
+
+M1_vertices[18].pos  = glm::vec3(1.0,1.0,-3.0);
+M1_vertices[18].norm = glm::vec3(.0,1.0,0.0);
+
+M1_vertices[19].pos  = glm::vec3(-1.0,1.0,-3.0);
+M1_vertices[19].norm = glm::vec3(.0,1.0,0.0);
+
+
+
+// back y
+
+M1_vertices[20].pos  = glm::vec3(-1.0,-1.0,-1.0);
+M1_vertices[20].norm = glm::vec3(.0,-1.0,0.0);
+
+M1_vertices[21].pos  = glm::vec3(1.0,-1.0,-1.0);
+M1_vertices[21].norm = glm::vec3(.0,-1.0,0.0);
+
+M1_vertices[22].pos  = glm::vec3(1.0,-1.0,-3.0);
+M1_vertices[22].norm = glm::vec3(.0,-1.0,0.0);
+
+M1_vertices[23].pos  = glm::vec3(-1.0,-1.0,-3.0);
+M1_vertices[23].norm = glm::vec3(.0,-1.0,0.0);
+
+
+
 // Resizes the indices array. Repalce the values with the correct number of
 // indices (3 * number of triangles)
-M1_indices.resize(3 * 2);
+M1_indices.resize(6 * 6);
 
-// first triangle
+
+// front z
+
 M1_indices[0] = 0;
 M1_indices[1] = 1;
 M1_indices[2] = 2;
 
-// second triangle
 M1_indices[3] = 2;
 M1_indices[4] = 3;
 M1_indices[5] = 0;
+
+// back z
+
+M1_indices[6] = 4;
+M1_indices[7] = 5;
+M1_indices[8] = 6;
+
+M1_indices[9] = 6;
+M1_indices[10] = 7;
+M1_indices[11] = 4;
+
+// front x
+
+M1_indices[12] = 8;
+M1_indices[13] = 9;
+M1_indices[14] = 10;
+
+M1_indices[15] = 10;
+M1_indices[16] = 11;
+M1_indices[17] = 8;
+
+// back x
+
+M1_indices[18] = 12;
+M1_indices[19] = 13;
+M1_indices[20] = 14;
+
+M1_indices[21] = 14;
+M1_indices[22] = 15;
+M1_indices[23] = 12;
+
+
+// front y
+
+M1_indices[24] = 16;
+M1_indices[25] = 17;
+M1_indices[26] = 18;
+
+M1_indices[27] = 18;
+M1_indices[28] = 19;
+M1_indices[29] = 16;
+
+
+// back y
+
+M1_indices[30] = 20;
+M1_indices[31] = 21;
+M1_indices[32] = 22;
+
+M1_indices[33] = 22;
+M1_indices[34] = 23;
+M1_indices[35] = 20;
 
 
 
