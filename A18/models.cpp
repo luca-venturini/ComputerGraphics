@@ -190,34 +190,103 @@ M1_indices[35] = 20;
 // Replace the code below, that creates a simple rotated square, with the one to create a cylinder.
 
 // Resizes the vertices array. Repalce the values with the correct number of
-// vertices
-M2_vertices.resize(4);
+// // vertices
+// M2_vertices.resize(4);
 
-// Vertices definitions
-M2_vertices[0].pos  = glm::vec3(0.0,-1.0,-1.1);
-M2_vertices[0].norm = glm::vec3(0.0,0.0,1.0);
+// // Vertices definitions
+// M2_vertices[0].pos  = glm::vec3(0.0,-1.0,-1.1);
+// M2_vertices[0].norm = glm::vec3(0.0,0.0,1.0);
 
-M2_vertices[1].pos  = glm::vec3(1.0,0.0,-1.1);
-M2_vertices[1].norm = glm::vec3(0.0,0.0,1.0);
+// M2_vertices[1].pos  = glm::vec3(1.0,0.0,-1.1);
+// M2_vertices[1].norm = glm::vec3(0.0,0.0,1.0);
 
-M2_vertices[2].pos  = glm::vec3(0.0,1.0,-1.1);
-M2_vertices[2].norm = glm::vec3(0.0,0.0,1.0);
+// M2_vertices[2].pos  = glm::vec3(0.0,1.0,-1.1);
+// M2_vertices[2].norm = glm::vec3(0.0,0.0,1.0);
 
-M2_vertices[3].pos  = glm::vec3(-1.0,0.0,-1.1);
-M2_vertices[3].norm = glm::vec3(0.0,0.0,1.0);
+// M2_vertices[3].pos  = glm::vec3(-1.0,0.0,-1.1);
+// M2_vertices[3].norm = glm::vec3(0.0,0.0,1.0);
+
+
+// // Resizes the indices array. Repalce the values with the correct number of
+// // indices (3 * number of triangles)
+// M2_indices.resize(6);
+
+// // indices definitions
+// M2_indices[0] = 0;
+// M2_indices[1] = 1;
+// M2_indices[2] = 2;
+// M2_indices[3] = 2;
+// M2_indices[4] = 3;
+// M2_indices[5] = 0;
+
+
+
+int Nslices = 72;
+float radious = 1;
+float height = 1;
+float cx = 0, cy = 0, cz = 0;
+float PI = 3.1415;
+
+M2_vertices.resize((Nslices*4)+2);
+
+M2_vertices[0].pos = glm::vec3(cx, cy + height, cz);
+M2_vertices[0].norm = glm::vec3(0.0, 1.0, 0.0);
+
+for (int i = 0; i<Nslices; i++){
+    M2_vertices[(i+1)].pos = glm::vec3(cx + radious * cos((float)i/Nslices * 2.0 * PI), cy + height, cz + radious * sin((float)i/Nslices * 2.0 * PI));
+	M2_vertices[(i+1)].norm = glm::vec3(0.0, 1.0, 0.0);
+
+	M2_vertices[Nslices + (i+1)].pos = glm::vec3(cx + radious * cos((float)i/Nslices * 2.0 * PI), cy + height, cz + radious * sin((float)i/Nslices * 2.0 * PI));
+	M2_vertices[Nslices + (i+1)].norm = glm::vec3(cos((float)i/Nslices * 2.0 * PI), 0.0, sin((float)i/Nslices * 2.0 * PI));
+}
+
+
+M2_vertices[2*Nslices+1].pos = glm::vec3(cx, cy - height, cz);
+M2_vertices[2*Nslices+1].norm = glm::vec3(0.0, -1.0, 0.0);
+
+for (int i = 0; i<Nslices; i++){
+    M2_vertices[2*Nslices+1 + (i+1)].pos = glm::vec3(cx + radious * cos((float)i/Nslices * 2.0 * PI), cy - height, cz + radious * sin((float)i/Nslices * 2.0 * PI));
+	M2_vertices[2*Nslices+1 + (i+1)].norm = glm::vec3(0.0, -1.0, 0.0);
+
+	M2_vertices[3*Nslices+1 + (i+1)].pos = glm::vec3(cx + radious * cos((float)i/Nslices * 2.0 * PI), cy - height, cz + radious * sin((float)i/Nslices * 2.0 * PI));
+	M2_vertices[3*Nslices+1 + (i+1)].norm = glm::vec3(cos((float)i/Nslices * 2.0 * PI), 0.0, sin((float)i/Nslices * 2.0 * PI));
+}
+
 
 
 // Resizes the indices array. Repalce the values with the correct number of
 // indices (3 * number of triangles)
-M2_indices.resize(6);
+M2_indices.resize((3 * Nslices)*2 + Nslices*3*2);
 
-// indices definitions
-M2_indices[0] = 0;
-M2_indices[1] = 1;
-M2_indices[2] = 2;
-M2_indices[3] = 2;
-M2_indices[4] = 3;
-M2_indices[5] = 0;
+//upper circle
+for(int i = 0; i<Nslices; i++){
+    M2_indices[i*3 + 0] = 0;
+    M2_indices[i*3 + 1] = i+1;
+    M2_indices[i*3 + 2] = (i+1)%Nslices+1;
+}
+
+//lower circle
+for(int i = 0; i<Nslices; i++){
+    M2_indices[3 * Nslices + i*3 + 0] = (2*Nslices+1) + 0;
+    M2_indices[3 * Nslices + i*3 + 1] = (2*Nslices+1) + i+1;
+    M2_indices[3 * Nslices + i*3 + 2] = (2*Nslices+1) + (i+1)%Nslices+1;
+}
+
+//side 1
+for(int i = 0; i<Nslices; i++){
+    M2_indices[2 * 3 * Nslices + i*3 + 0] = Nslices + i + 1;
+    M2_indices[2 * 3 * Nslices + i*3 + 1] = Nslices + (i+1)%Nslices + 1;
+    M2_indices[2 * 3 * Nslices + i*3 + 2] = 3*Nslices + i + 1 + 1;
+}
+
+//side 2
+for(int i = 0; i<Nslices; i++){
+    M2_indices[3 * 3 * Nslices + i*3 + 0] = 3*(Nslices) + i + 1 + 1;
+    M2_indices[3 * 3 * Nslices + i*3 + 1] = 3*(Nslices) + (i+1)%Nslices + 1 + 1;
+    M2_indices[3 * 3 * Nslices + i*3 + 2] = Nslices + (i+1)%Nslices + 1;
+}
+
+
 
 
 
@@ -230,33 +299,76 @@ M2_indices[5] = 0;
 
 
 //// M3 : Sphere
-// Replace the code below, that creates a simple triangle, with the one to create a sphere.
 
-// Resizes the vertices array. Repalce the values with the correct number of
-// vertices
-M3_vertices.resize(3);
+int circle_slices = 72;
+int sphere_leyers = 500;
+float sphere_radious = 0.5;
+height = 1;
+cx = 0, cy = -0.5, cz = 0;
+PI = 3.1415;
 
-// Vertices definitions
-M3_vertices[0].pos  = glm::vec3(0.0,1.0,-1.2);
-M3_vertices[0].norm = glm::vec3(0.0,0.0,1.0);
-M3_vertices[1].pos  = glm::vec3(-0.866,-0.5,-1.2);
-M3_vertices[1].norm = glm::vec3(0.0,0.0,1.0);
-M3_vertices[2].pos  = glm::vec3(0.866,-0.5,-1.2);
-M3_vertices[2].norm = glm::vec3(0.0,0.0,1.0);
+int index = 0;
+M3_vertices.resize(((circle_slices+1)*3)*(sphere_leyers+1));
+//  std::cout << "LEN 1: " << ((circle_slices+1)*3)*(sphere_leyers+1) << "\n"; 
 
 
-// Resizes the indices array. Repalce the values with the correct number of
-// indices (3 * number of triangles)
-M3_indices.resize(3);
-
-// indices definitions
-M3_indices[0] = 0;
-M3_indices[1] = 1;
-M3_indices[2] = 2;
+M3_vertices[index].pos = glm::vec3(cx, cy, cz);
+M3_vertices[index++].norm = glm::vec3(.0, -1., .0);
 
 
+for(int l = 1; l < sphere_leyers; l++){
+	for (int i = 0; i<circle_slices; i++){
+		radious = sqrt(pow(sphere_radious, 2) - pow(cy + l*height/sphere_leyers, 2));
+		M3_vertices[index].pos = glm::vec3(cx + radious * cos((float)i/circle_slices * 2.0 * PI), cy + l*height/sphere_leyers, cz + radious * sin((float)i/circle_slices * 2.0 * PI));
+		M3_vertices[index++].norm = glm::normalize(glm::vec3(radious*cos((float)i/circle_slices * 2.0 * PI), radious*sin(-PI/2 + PI * l*height/sphere_leyers) , radious*sin((float)i/circle_slices * 2.0 * PI)) );
+	}
+}
 
 
+M3_vertices[index].pos = glm::vec3(cx, cy + height*1.0, cz);
+M3_vertices[index++].norm = glm::vec3(.0, 1., .0);
+
+
+
+//  std::cout << "YYYYYYYYYYYYYYYYYYYLEN: " << 3 * circle_slices * (sphere_leyers+1) + 2 * 3 * circle_slices * sphere_leyers << "\n"; 
+
+M3_indices.resize(2 * 3 * circle_slices * (sphere_leyers-1) + 2*circle_slices*3);
+index = 0;
+
+for(int l = 0; l < sphere_leyers - 2; l++){
+    for (int i = 0; i<circle_slices; i++){
+        M3_indices[index++] = l*circle_slices + i + 1;
+        M3_indices[index++] = l*circle_slices + (i+1)%circle_slices + 1;
+        M3_indices[index++] = l*circle_slices + i + 1 + (circle_slices);
+        // std::cout << "indices:" << index - 3  << "  " << index - 2 << "  " << index - 1 << "\n";
+        // std::cout << "X: " << M3_indices[index - 3] << " - Y: " << M3_indices[index - 2] << " - Z:" << M3_indices[index - 1] << "\n";
+    }
+    // std::cout << "\n";
+}
+
+for(int l = 1; l < sphere_leyers - 1; l++){
+    for (int i = 0; i<circle_slices; i++){
+        M3_indices[index++] = l*circle_slices + i + 1;
+        M3_indices[index++] = l*circle_slices + (i+1)%circle_slices + 1;
+        M3_indices[index++] = (l-1)*circle_slices + (i+1)%circle_slices + 1;
+        // std::cout << "indices:" << index - 3  << "  " << index - 2 << "  " << index - 1 << "\n";
+        // std::cout << "X: " << M3_indices[index - 3] << " - Y: " << M3_indices[index - 2] << " - Z:" << M3_indices[index - 1] << "\n";
+    }
+    // std::cout << "\n";
+}
+
+
+for(int i = 0; i<circle_slices; i++){
+    M3_indices[index++] = 0;
+    M3_indices[index++] = i+1;
+    M3_indices[index++] = (i+1)%circle_slices+1;
+}
+
+for(int i = 0; i<circle_slices; i++){
+    M3_indices[index++] = (sphere_leyers-1)*circle_slices+1;
+    M3_indices[index++] = (sphere_leyers-2)*circle_slices+1+i;
+    M3_indices[index++] = (sphere_leyers-2)*circle_slices+(1+i)%circle_slices+1;
+}
 
 
 
