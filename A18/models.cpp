@@ -376,51 +376,107 @@ for(int i = 0; i<circle_slices; i++){
 
 //// M4 : Spring
 // Replace the code below, that creates a simple octahedron, with the one to create a spring.
-M4_vertices.resize(6);
+int M4Circles = 216;
+int M4SlicesPerCircle = 72;
+float radious_ext = 2.0;
+radious = .5;
+float step = 5.0 / M4Circles;
 
-// Vertices definitions
-M4_vertices[0].pos  = glm::vec3(0.0,1.414,-1.0);
-M4_vertices[0].norm = glm::vec3(0.0,0.0,1.0);
-M4_vertices[1].pos  = glm::vec3(0.0,-1.414,-1.0);
-M4_vertices[1].norm = glm::vec3(0.0,0.0,1.0);
-M4_vertices[2].pos  = glm::vec3(-1.0,0.0,-2.0);
-M4_vertices[2].norm = glm::vec3(0.0,0.0,1.0);
-M4_vertices[3].pos  = glm::vec3(-1.0,0.0,0.0);
-M4_vertices[3].norm = glm::vec3(0.0,-1.0,0.0);
-M4_vertices[4].pos  = glm::vec3(1.0,0.0,0.0);
-M4_vertices[4].norm = glm::vec3(0.0,-1.0,0.0);
-M4_vertices[5].pos  = glm::vec3(1.0,0.0,-2.0);
-M4_vertices[5].norm = glm::vec3(0.0,-1.0,0.0);
+M4_vertices.resize(3 * (M4SlicesPerCircle + 1) * M4Circles);
+index = 0;
+float xc, yc, zc;
+
+for (int i = 0; i<M4Circles; i++){
+    xc = radious_ext * cos(4 * PI * i / M4Circles);
+    yc = 1 - step*i;
+    zc = radious_ext * sin(4 * PI *i / M4Circles);
+    for (int j = 0; j<M4SlicesPerCircle; j++){
+        M4_vertices[index].pos = glm::vec3( 
+            xc + radious * cos(2 * PI * j / M4SlicesPerCircle) * cos(4 * PI *i / M4Circles),
+            yc + radious * sin(2 * PI * j / M4SlicesPerCircle),
+            zc + radious * cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)
+        );
+        M4_vertices[index++].norm = glm::vec3( 
+            cos(2 * PI * j / M4SlicesPerCircle) * cos(4 * PI *i / M4Circles),
+            sin(2 * PI * j / M4SlicesPerCircle),
+            cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)
+        );
+    }
+}
+
+
+int i = 0;
+
+xc = radious_ext * cos(4 * PI * i / M4Circles);
+yc = 1 - step*i;
+zc = radious_ext * sin(4 * PI *i / M4Circles);
+
+M4_vertices[index].pos = glm::vec3(xc, yc, zc);
+M4_vertices[index++].norm = glm::vec3(0.0, 0.0, -1.0);
+
+for (int j = 0; j<M4SlicesPerCircle; j++){
+    M4_vertices[index].pos = glm::vec3( 
+        xc + radious * cos(2 * PI * j / M4SlicesPerCircle) * cos(4 * PI *i / M4Circles),
+        yc + radious * sin(2 * PI * j / M4SlicesPerCircle),
+        zc + radious * cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)
+    );
+    M4_vertices[index++].norm = glm::vec3(0.0, 0.0, -1.0);
+}
+
+i = M4Circles-1;
+
+xc = radious_ext * cos(4 * PI * i / M4Circles);
+yc = 1 - step*i;
+zc = radious_ext * sin(4 * PI *i / M4Circles);
+
+M4_vertices[index].pos = glm::vec3(xc, yc, zc);
+M4_vertices[index++].norm = glm::vec3(0.0, 0.0, 1.0);
+
+for (int j = 0; j<M4SlicesPerCircle; j++){
+    M4_vertices[index].pos = glm::vec3( 
+        xc + radious * cos(2 * PI * j / M4SlicesPerCircle) * cos(4 * PI *i / M4Circles),
+        yc + radious * sin(2 * PI * j / M4SlicesPerCircle),
+        zc + radious * cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)
+    );
+    M4_vertices[index++].norm = glm::vec3(0.0, 0.0, 1.0);
+}
+
 
 
 // Resizes the indices array. Repalce the values with the correct number of
 // indices (3 * number of triangles)
-M4_indices.resize(3 * 8);
+M4_indices.resize(2 * 3 * (M4Circles-1) * M4SlicesPerCircle + 6 * 3 * M4SlicesPerCircle);
 
-// indices definitions
-M4_indices[0]  = 0;
-M4_indices[1]  = 2;
-M4_indices[2]  = 3;
-M4_indices[3]  = 1;
-M4_indices[4]  = 3;
-M4_indices[5]  = 2;
-M4_indices[6]  = 0;
-M4_indices[7]  = 3;
-M4_indices[8]  = 4;
-M4_indices[9]  = 1;
-M4_indices[10] = 4;
-M4_indices[11] = 3;
-M4_indices[12] = 0;
-M4_indices[13] = 4;
-M4_indices[14] = 5;
-M4_indices[15] = 1;
-M4_indices[16] = 5;
-M4_indices[17] = 4;
-M4_indices[18] = 0;
-M4_indices[19] = 5;
-M4_indices[20] = 2;
-M4_indices[21] = 1;
-M4_indices[22] = 2;
-M4_indices[23] = 5;
+
+index = 0;
+
+for (int i = 0; i < M4Circles - 1; i++){
+    for (int j = 0; j < M4SlicesPerCircle; j++){
+        M4_indices[index++] = (M4SlicesPerCircle)*i + j;
+        M4_indices[index++] = (M4SlicesPerCircle)*i + (j + 1)%M4SlicesPerCircle;
+        M4_indices[index++] = (M4SlicesPerCircle)*(i+1) + j;
+    }
+}
+
+for (int i = 1; i < M4Circles; i++){
+    for (int j = 0; j < M4SlicesPerCircle; j++){
+        M4_indices[index++] = (M4SlicesPerCircle)*i + j;
+        M4_indices[index++] = (M4SlicesPerCircle)*i + (j + 1)%M4SlicesPerCircle;
+        M4_indices[index++] = (M4SlicesPerCircle)*(i-1) + (j+1)%M4SlicesPerCircle;
+    }
+}
+
+for (int i = 0; i < M4SlicesPerCircle; i++){
+    M4_indices[index++] = M4Circles*M4SlicesPerCircle;
+    M4_indices[index++] = M4Circles*M4SlicesPerCircle + i+1;
+    M4_indices[index++] = M4Circles*M4SlicesPerCircle + (i+1)%M4SlicesPerCircle+1;//; (M4SlicesPerCircle+1)*(i+1) + j + 1;
+}
+
+
+for (int i = 0; i < M4SlicesPerCircle; i++){
+    M4_indices[index++] = (M4SlicesPerCircle+1) + M4Circles*M4SlicesPerCircle;
+    M4_indices[index++] = (M4SlicesPerCircle+1) + M4Circles*M4SlicesPerCircle + i+1;
+    M4_indices[index++] = (M4SlicesPerCircle+1) + M4Circles*M4SlicesPerCircle + (i+1)%M4SlicesPerCircle+1;//; (M4SlicesPerCircle+1)*(i+1) + j + 1;
+}
 
 }
