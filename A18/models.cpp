@@ -1,5 +1,6 @@
 // this function creates the geometries to be shown, and output thems
 // in global variables M1_vertices and M1_indices to M4_vertices and M4_indices
+#include <glm/gtx/rotate_vector.hpp>
 
 struct Vertex {
 	glm::vec3 pos;
@@ -181,45 +182,7 @@ M1_indices[35] = 20;
 
 
 
-
-
-
-
-
-//// M2 : Cylinder
-// Replace the code below, that creates a simple rotated square, with the one to create a cylinder.
-
-// Resizes the vertices array. Repalce the values with the correct number of
-// // vertices
-// M2_vertices.resize(4);
-
-// // Vertices definitions
-// M2_vertices[0].pos  = glm::vec3(0.0,-1.0,-1.1);
-// M2_vertices[0].norm = glm::vec3(0.0,0.0,1.0);
-
-// M2_vertices[1].pos  = glm::vec3(1.0,0.0,-1.1);
-// M2_vertices[1].norm = glm::vec3(0.0,0.0,1.0);
-
-// M2_vertices[2].pos  = glm::vec3(0.0,1.0,-1.1);
-// M2_vertices[2].norm = glm::vec3(0.0,0.0,1.0);
-
-// M2_vertices[3].pos  = glm::vec3(-1.0,0.0,-1.1);
-// M2_vertices[3].norm = glm::vec3(0.0,0.0,1.0);
-
-
-// // Resizes the indices array. Repalce the values with the correct number of
-// // indices (3 * number of triangles)
-// M2_indices.resize(6);
-
-// // indices definitions
-// M2_indices[0] = 0;
-// M2_indices[1] = 1;
-// M2_indices[2] = 2;
-// M2_indices[3] = 2;
-// M2_indices[4] = 3;
-// M2_indices[5] = 0;
-
-
+//Cylinder
 
 int Nslices = 72;
 float radious = 1;
@@ -288,16 +251,6 @@ for(int i = 0; i<Nslices; i++){
 
 
 
-
-
-
-
-
-
-
-
-
-
 //// M3 : Sphere
 
 int circle_slices = 72;
@@ -329,8 +282,6 @@ M3_vertices[index].pos = glm::vec3(cx, cy + height*1.0, cz);
 M3_vertices[index++].norm = glm::vec3(.0, 1., .0);
 
 
-
-//  std::cout << "YYYYYYYYYYYYYYYYYYYLEN: " << 3 * circle_slices * (sphere_leyers+1) + 2 * 3 * circle_slices * sphere_leyers << "\n"; 
 
 M3_indices.resize(2 * 3 * circle_slices * (sphere_leyers-1) + 2*circle_slices*3);
 index = 0;
@@ -375,7 +326,6 @@ for(int i = 0; i<circle_slices; i++){
 
 
 //// M4 : Spring
-// Replace the code below, that creates a simple octahedron, with the one to create a spring.
 int M4Circles = 216;
 int M4SlicesPerCircle = 72;
 float radious_ext = 2.0;
@@ -385,21 +335,27 @@ float step = 5.0 / M4Circles;
 M4_vertices.resize(3 * (M4SlicesPerCircle + 1) * M4Circles);
 index = 0;
 float xc, yc, zc;
+float alpha = atan(step/(4*PI*radious_ext/M4Circles));
 
 for (int i = 0; i<M4Circles; i++){
     xc = radious_ext * cos(4 * PI * i / M4Circles);
     yc = 1 - step*i;
     zc = radious_ext * sin(4 * PI *i / M4Circles);
     for (int j = 0; j<M4SlicesPerCircle; j++){
-        M4_vertices[index].pos = glm::vec3( 
-            xc + radious * cos(2 * PI * j / M4SlicesPerCircle) * cos(4 * PI *i / M4Circles),
-            yc + radious * sin(2 * PI * j / M4SlicesPerCircle),
-            zc + radious * cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)
-        );
-        M4_vertices[index++].norm = glm::vec3( 
+        M4_vertices[index].pos = glm::rotate(
+                                    glm::vec3(
+                                    radious * cos(2 * PI * j / M4SlicesPerCircle) * cos(4 * PI *i / M4Circles), radious * sin(2 * PI * j / M4SlicesPerCircle),  radious * cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)
+                                    ),
+                                    alpha,
+                                    glm::vec3(cos(4 * PI * i / M4Circles), 0, sin(4 * PI * i / M4Circles))
+                                )+glm::vec3(xc, yc, zc);
+
+        M4_vertices[index++].norm = glm::rotate(glm::vec3( 
             cos(2 * PI * j / M4SlicesPerCircle) * cos(4 * PI *i / M4Circles),
             sin(2 * PI * j / M4SlicesPerCircle),
-            cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)
+            cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)),
+            alpha,
+            glm::vec3(cos(4 * PI * i / M4Circles), 0, sin(4 * PI * i / M4Circles))
         );
     }
 }
@@ -412,15 +368,17 @@ yc = 1 - step*i;
 zc = radious_ext * sin(4 * PI *i / M4Circles);
 
 M4_vertices[index].pos = glm::vec3(xc, yc, zc);
-M4_vertices[index++].norm = glm::vec3(0.0, 0.0, -1.0);
+M4_vertices[index++].norm = glm::rotateX(glm::vec3(0.0, 0.0, -1.0), alpha );
 
 for (int j = 0; j<M4SlicesPerCircle; j++){
-    M4_vertices[index].pos = glm::vec3( 
-        xc + radious * cos(2 * PI * j / M4SlicesPerCircle) * cos(4 * PI *i / M4Circles),
-        yc + radious * sin(2 * PI * j / M4SlicesPerCircle),
-        zc + radious * cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)
-    );
-    M4_vertices[index++].norm = glm::vec3(0.0, 0.0, -1.0);
+    M4_vertices[index].pos = glm::rotate(
+            glm::vec3(
+                radious * cos(2 * PI * j / M4SlicesPerCircle) * cos(4 * PI *i / M4Circles), radious * sin(2 * PI * j / M4SlicesPerCircle),  radious * cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)
+            ),
+            alpha,
+            glm::vec3(cos(4 * PI * i / M4Circles), 0, sin(4 * PI * i / M4Circles))
+        )+glm::vec3(xc, yc, zc);
+    M4_vertices[index++].norm = glm::rotateX(glm::vec3(0.0, 0.0, -1.0), alpha );
 }
 
 i = M4Circles-1;
@@ -430,20 +388,22 @@ yc = 1 - step*i;
 zc = radious_ext * sin(4 * PI *i / M4Circles);
 
 M4_vertices[index].pos = glm::vec3(xc, yc, zc);
-M4_vertices[index++].norm = glm::vec3(0.0, 0.0, 1.0);
+M4_vertices[index++].norm = glm::rotateX(glm::vec3(0.0, 0.0, 1.0), alpha );
 
 for (int j = 0; j<M4SlicesPerCircle; j++){
-    M4_vertices[index].pos = glm::vec3( 
-        xc + radious * cos(2 * PI * j / M4SlicesPerCircle) * cos(4 * PI *i / M4Circles),
-        yc + radious * sin(2 * PI * j / M4SlicesPerCircle),
-        zc + radious * cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)
-    );
-    M4_vertices[index++].norm = glm::vec3(0.0, 0.0, 1.0);
+    M4_vertices[index].pos = glm::rotate(
+            glm::vec3(
+                radious * cos(2 * PI * j / M4SlicesPerCircle) * cos(4 * PI *i / M4Circles), radious * sin(2 * PI * j / M4SlicesPerCircle),  radious * cos(2 * PI * j / M4SlicesPerCircle) * sin(4 * PI *i / M4Circles)
+            ),
+            alpha,
+            glm::vec3(cos(4 * PI * i / M4Circles), 0, sin(4 * PI * i / M4Circles))
+        )+glm::vec3(xc, yc, zc);
+    M4_vertices[index++].norm = glm::rotateX(glm::vec3(0.0, 0.0, 1.0), alpha );
 }
 
 
 
-// Resizes the indices array. Repalce the values with the correct number of
+// // Resizes the indices array. Repalce the values with the correct number of
 // indices (3 * number of triangles)
 M4_indices.resize(2 * 3 * (M4Circles-1) * M4SlicesPerCircle + 6 * 3 * M4SlicesPerCircle);
 
