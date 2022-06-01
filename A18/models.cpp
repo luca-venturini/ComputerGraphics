@@ -254,7 +254,7 @@ for(int i = 0; i<Nslices; i++){
 //// M3 : Sphere
 
 int circle_slices = 72;
-int sphere_leyers = 500;
+int sphere_leyers = 40;
 float sphere_radious = 0.5;
 height = 1;
 cx = 0, cy = -0.5, cz = 0;
