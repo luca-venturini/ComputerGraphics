@@ -10,12 +10,12 @@ const std::string TRUCK_PATH = "models/Hummer.obj";
 const std::string TRUCK_TEXTURE = "textures/HummerDiff.png";
 
 
-const std::string GROUND_PATH = "models/TerrainCenter.obj";
-const std::string GROUND_TEXTURE = "textures/Terrain.jpg";
+const std::string GROUND_PATH = "models/BOTW.obj"; //TerrainCenter.obj";
+const std::string GROUND_TEXTURE = "textures/COLORED.png";//Terrain.jpg";
 
-const std::string HEIGHT_MAP = "textures/displacementtest.png";
+const std::string HEIGHT_MAP = "textures/BOTW2.png";//displacementtest.png";
 
-glm::vec3 truckPose = glm::vec3(0.0, 0.0, -2.0);
+glm::vec3 truckPose = glm::vec3(0.0, 0.0, 0.0);
 glm::vec3 groundPose = glm::vec3(0.0, 0.0, 0.0);
 glm::vec3 deltaCameraPose = glm::vec3(-2.0, 0.0, 1.0);
 glm::vec3 startingDelta = glm::vec3(-2.0, 0.0, 1.0);
@@ -26,6 +26,9 @@ float roll = 0.0f;
 
 float truckAngle = 0.0f;
 float cameraAngle = 0.0f;
+
+int pixRear;
+int pixFront;
 
 stbi_uc* heightMap;
 int heightMapWidth, heightMapHeight;
@@ -242,37 +245,39 @@ class MyProject : public BaseProject {
 
 
 		if(glfwGetKey(window, GLFW_KEY_W)) {
-			std::cout  << "your pose: "<< truckPose[0] << " " << truckPose[1] << " " << truckPose[2] << " aaaa" << (int)heightMap[8000] << "width: " << heightMapWidth << " height: " << heightMapHeight <<"\n\n";
-			
-			int pixX = round(fmax(0.0f, fmin(heightMapWidth-1,  (truckPose[0]+33.5-0.4) * heightMapWidth  / 67.0)));
-			int pixY = round(fmax(0.0f, fmin(heightMapHeight-1, (truckPose[1]+33.5-0.4) * heightMapHeight / 67.0)));
-
-			int pix = (int)heightMap[heightMapWidth * pixY + pixX];
-			std::cout << "Terrain rear:  " << pix << "\n\n"; 
-
-			pixX = round(fmax(0.0f, fmin(heightMapWidth-1,  (truckPose[0]+33.5+0.4) * heightMapWidth  / 67.0)));
-			pixY = round(fmax(0.0f, fmin(heightMapHeight-1, (truckPose[1]+33.5+0.4) * heightMapHeight / 67.0)));
-
-			pix = (int)heightMap[heightMapWidth * pixY + pixX];
-			std::cout << "Terrain front: " << pix << "\n\n"; 
 			truckPose += deltaT * LINEAR_VEL * glm::vec3(glm::rotate(glm::mat4(1.0f), glm::radians(truckAngle), glm::vec3(0.0f, 0.0f, 1.0f)) * glm::vec4(1,0,0,1));
+
+			std::cout  << "your pose: "<< truckPose[0] << " " << truckPose[1] << " " << truckPose[2] << "Angle: " << truckAngle  << " aaaa" << (int)heightMap[8000] << "width: " << heightMapWidth << " height: " << heightMapHeight <<"\n\n";
+			
+			int pixXFront = round(fmax(0.0f, fmin(heightMapWidth-1,  (truckPose[0]+24.0-0.35*cos(glm::radians(truckAngle))) * heightMapWidth  / 48.0)));
+			int pixYFront = round(fmax(0.0f, fmin(heightMapHeight-1, (truckPose[1]+24.0-0.35*sin(glm::radians(truckAngle))) * heightMapHeight / 48.0)));
+
+			pixFront = (int)heightMap[heightMapWidth * pixYFront + pixXFront];
+			std::cout << "Terrain rear:  " << pixFront << "\n\n"; 
+
+			int pixXRear = round(fmax(0.0f, fmin(heightMapWidth-1,  (truckPose[0]+24.0+0.35*cos(glm::radians(truckAngle))) * heightMapWidth  / 48.0)));
+			int pixYRear = round(fmax(0.0f, fmin(heightMapHeight-1, (truckPose[1]+24.0+0.35*sin(glm::radians(truckAngle))) * heightMapHeight / 48.0)));
+
+			pixRear = (int)heightMap[heightMapWidth * pixYRear + pixXRear];
+			std::cout << "Terrain front: " << pixRear << "\n\n";  
+
+
 		}
 		if(glfwGetKey(window, GLFW_KEY_S)) {
-			std::cout  << "your pose: "<< truckPose[0] << " " << truckPose[1] << " " << truckPose[2] << " aaaa" << (int)heightMap[8000] << "width: " << heightMapWidth << " height: " << heightMapHeight <<"\n\n";
-			
-			int pixX = round(fmax(0.0f, fmin(heightMapWidth-1,  (truckPose[0]+33.5-0.4) * heightMapWidth  / 67.0)));
-			int pixY = round(fmax(0.0f, fmin(heightMapHeight-1, (truckPose[1]+33.5-0.4) * heightMapHeight / 67.0)));
-
-			int pix = (int)heightMap[heightMapWidth * pixY + pixX];
-			std::cout << "Terrain rear:  " << pix << "\n\n"; 
-
-			 pixX = round(fmax(0.0f, fmin(heightMapWidth-1,  (truckPose[0]+33.5+0.4) * heightMapWidth  / 67.0)));
-			pixY = round(fmax(0.0f, fmin(heightMapHeight-1, (truckPose[1]+33.5+0.4) * heightMapHeight / 67.0)));
-
-			pix = (int)heightMap[heightMapWidth * pixY + pixX];
-			std::cout << "Terrain front: " << pix << "\n\n"; 
-			std::cout << "Terrain: " << pix << "\n\n"; 
 			truckPose -= deltaT * LINEAR_VEL * glm::vec3(glm::rotate(glm::mat4(1.0f), glm::radians(truckAngle), glm::vec3(0.0f, 0.0f, 1.0f)) * glm::vec4(1,0,0,1));
+			std::cout  << "your pose: "<< truckPose[0] << " " << truckPose[1] << " " << truckPose[2] << "Angle: " << truckAngle  << " aaaa" << (int)heightMap[8000] << "width: " << heightMapWidth << " height: " << heightMapHeight <<"\n\n";
+			
+			int pixXFront = round(fmax(0.0f, fmin(heightMapWidth-1,  (truckPose[0]+24.0-0.35*cos(glm::radians(truckAngle))) * heightMapWidth  / 48.0)));
+			int pixYFront = round(fmax(0.0f, fmin(heightMapHeight-1, (truckPose[1]+24.0-0.35*sin(glm::radians(truckAngle))) * heightMapHeight / 48.0)));
+
+			pixFront = (int)heightMap[heightMapWidth * pixYFront + pixXFront];
+			std::cout << "Terrain rear:  " << pixFront << "\n\n"; 
+
+			int pixXRear = round(fmax(0.0f, fmin(heightMapWidth-1,  (truckPose[0]+24.0+0.35*cos(glm::radians(truckAngle))) * heightMapWidth  / 48.0)));
+			int pixYRear = round(fmax(0.0f, fmin(heightMapHeight-1, (truckPose[1]+24.0+0.35*sin(glm::radians(truckAngle))) * heightMapHeight / 48.0)));
+
+			pixRear = (int)heightMap[heightMapWidth * pixYRear + pixXRear];
+			std::cout << "Terrain front: " << pixRear << "\n\n"; 
 		}
 		if(glfwGetKey(window, GLFW_KEY_A)) {
 			truckAngle += 1.0f * ANGULAR_VEL;
@@ -335,9 +340,11 @@ class MyProject : public BaseProject {
 		vkUnmapMemory(device, globalDS.uniformBuffersMemory[0][currentImage]);
 
 		ubo.model = 
+			glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, (pixFront+pixRear)/4.0f/255.0f)) *
 			glm::translate(glm::mat4(1.0f), truckPose) * 
 			glm::scale(glm::mat4(1.0f), glm::vec3(0.2, 0.2, 0.2)) *
-			glm::rotate(glm::mat4(1.0f), glm::radians(truckAngle+90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			glm::rotate(glm::mat4(1.0f), glm::radians(truckAngle+90.0f), glm::vec3(0.0f, 0.0f, 1.0f)) *
+			glm::rotate(glm::mat4(1.0f), glm::atan((pixFront-pixRear)/255.0f, 0.8f), glm::vec3(1.0f, 0.0f, 0.0f));
 
 		vkMapMemory(device, truckDS.uniformBuffersMemory[0][currentImage], 0,
 							sizeof(ubo), 0, &data);
@@ -346,7 +353,7 @@ class MyProject : public BaseProject {
 
 		ubo.model = 
 			// glm::translate(glm::mat4(1.0f), glm::vec3(-40.0, -40.0, -.8)) * 
-			glm::scale(glm::mat4(1.0f), glm::vec3(2.0, 2.0, 2.0))
+			glm::scale(glm::mat4(1.0f), glm::vec3(.2, .2, .2))
 			 *  glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
 		vkMapMemory(device, groundDS.uniformBuffersMemory[0][currentImage], 0,
