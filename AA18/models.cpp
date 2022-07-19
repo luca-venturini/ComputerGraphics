@@ -261,7 +261,7 @@ cx = 0, cy = -0.5, cz = 0;
 PI = 3.1415;
 
 int index = 0;
-M3_vertices.resize(slicesPerCircle*numberOfCricles*6);
+M3_vertices.resize(slicesPerCircle*numberOfCricles);
 //  std::cout << "LEN 1: " << ((circle_slices+1)*3)*(sphere_leyers+1) << "\n"; 
 
 
@@ -280,7 +280,7 @@ for (int i = 0; i<numberOfCricles; i++){
 }
 
 
-M3_indices.resize((numberOfCricles-1)*(slicesPerCircle-1)*2*3+2*(slicesPerCircle-1)*3);
+M3_indices.resize(2*(numberOfCricles-1)*(slicesPerCircle-1)*3+2*(slicesPerCircle-1)*3);
 index = 0;
 
 for(int l = 0; l < numberOfCricles-1; l++){
@@ -334,7 +334,8 @@ float radious_ext = 2.0;
 radious = .5;
 float step = 5.0 / M4Circles;
 
-M4_vertices.resize(3 * (M4SlicesPerCircle + 1) * M4Circles);
+// M4_vertices.resize(3 * (M4SlicesPerCircle + 1) * M4Circles);
+M4_vertices.resize(2*(M4SlicesPerCircle) + 2 + M4SlicesPerCircle * M4Circles);
 index = 0;
 float xc, yc, zc;
 float alpha = atan(step/(4*PI*radious_ext/M4Circles));
