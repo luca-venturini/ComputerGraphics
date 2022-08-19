@@ -8,11 +8,8 @@ glm::mat4 MakeWorldEuler(glm::vec3 pos, float yaw, float pitch, float roll) {
 
 glm::mat4 getRotation(glm::vec3 *pos, float yaw, float pitch, float roll, float mu, float dt){
 
-	glm::vec3 ux = glm::vec3(glm::rotate(glm::mat4(1),(float)glm::radians(yaw), glm::vec3(0,1,0)) *glm::vec4(1,0,0,1));
-	glm::vec3 uy = glm::vec3(0,1,0);
-	glm::vec3 uz = glm::vec3(glm::rotate(glm::mat4(1),(float)glm::radians(yaw), glm::vec3(0,1,0)) *glm::vec4(0,0,-1,1));
-	std::cout << ux.x << " " << ux.y << " " << ux.z << "\n";
-	*pos += ux * mu * dt;
+	glm::vec3 u = glm::vec3(glm::rotate(glm::mat4(1),(float)glm::radians(yaw), glm::vec3(0,1,0)) *glm::vec4(1,0,0,1));
+	*pos += u * mu * dt;
 	return MakeWorldEuler(*pos, yaw, pitch, roll);
 }
 

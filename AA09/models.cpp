@@ -280,8 +280,8 @@ for(int i = 0; i<Nslices; i++){
 // Resizes the vertices array. Repalce the values with the correct number of
 // vertices components (3 * number of vertices)
 
-int circle_slices = 36;
-int sphere_leyers = 40;
+int circle_slices = 80;
+int sphere_leyers = 80;
 float sphere_radious = 0.5;
 height = 1;
 cx = 0, cy = -0.5, cz = 0;
@@ -289,73 +289,39 @@ PI = 3.1415;
 
 int index = 0;
 M3_vertices.resize(((circle_slices+1)*3)*(sphere_leyers+1));
-//  std::cout << "LEN 1: " << ((circle_slices+1)*3)*(sphere_leyers+1) << "\n"; 
 
 
-for(int l = 0; l <= sphere_leyers; l++){
-    M3_vertices[index++] = cx;
-    M3_vertices[index++] = cy + l*height/sphere_leyers;
-    M3_vertices[index++] = cz;
-    // std::cout << "indiciiiiii: " << index-3 << "  " <<index-2 << "  " << index-1 << "\n\n";
-    // std::cout << "X: " << M3_vertices[index-3]<< " - Y: " << M3_vertices[index-2] << " - Z:" << M3_vertices[index-1] << "\n";
+for (int i = 0; i <= sphere_leyers; i++){
 
-    for (int i = 0; i<circle_slices; i++){
-        radious = sqrt(pow(sphere_radious, 2) - pow(cy + l*height/sphere_leyers, 2));
-        // std::cout << "RAGGIO: " << radious << "\n\n"; 
-        M3_vertices[index++] = cx + radious * cos((float)i/circle_slices * 2.0 * PI);
-        M3_vertices[index++] = cy + l*height/sphere_leyers;
-        M3_vertices[index++] = cz + radious * sin((float)i/circle_slices * 2.0 * PI);
-        // std::cout << "indici: " << index-3 << "  " <<index-2 << "  " << index-1 << "\n\n";
-        // std::cout << "X: " << M3_vertices[index-3]<< " - Y: " << M3_vertices[index-2] << " - Z:" << M3_vertices[index-1] << "\n";
+    float c_y = cy + i*height/sphere_leyers;
+    float radious = sqrt(pow(sphere_radious, 2) - pow(c_y, 2));
+
+    for(int j = 0; j < circle_slices; j++){
+        M3_vertices[index++] = cx + radious * cos((float)j/circle_slices * 2.0 * PI);
+        M3_vertices[index++] = c_y;
+        M3_vertices[index++] = cz + radious * sin((float)j/circle_slices * 2.0 * PI);
     }
-    // std::cout << "\n\n";
 }
-
 
 
 // Resizes the indices array. Repalce the values with the correct number of
 // indices (3 * number of triangles)
  M3_indices.resize(3 * circle_slices * (sphere_leyers+1) + 2 * 3 * circle_slices * sphere_leyers);
-//  std::cout << "XXXXXXXXXXXXXXXLEN: " << 3 * circle_slices * (sphere_leyers+1) + 2 * 3 * circle_slices * sphere_leyers << "\n"; 
 
-for(int l = 0; l <= sphere_leyers; l++){
-    for (int i = 0; i<circle_slices; i++){
-        M3_indices[l*circle_slices*3 + i*3 + 0] = l*(circle_slices+1);
-        M3_indices[l*circle_slices*3 + i*3 + 1] = l*(circle_slices+1) + i + 1;
-        M3_indices[l*circle_slices*3 + i*3 + 2] = l*(circle_slices+1) + (i+1)%circle_slices + 1;
-        // std::cout << "indices:" << l*circle_slices*3 + i*3 + 0 << "  " << l*circle_slices*3 + i*3 + 1 << "  " << l*circle_slices*3 + i*3 + 2 << "\n";
-        // std::cout << "X: " << M3_indices[l*circle_slices*3 + i*3 + 0] << " - Y: " << M3_indices[l*circle_slices*3 + i*3 + 1] << " - Z:" << M3_indices[l*circle_slices*3 + i*3 + 2] << "\n";
+for(int i = 0; i < sphere_leyers; i++){
+    for (int j = 0; j < circle_slices; j++){
+        M3_indices[index++] = i*circle_slices + j;
+        M3_indices[index++] = i*circle_slices + (j+1)%circle_slices;
+        M3_indices[index++] = (i+1)*circle_slices + j;
     }
-    // std::cout << "\n";
 }
 
-
-//  std::cout << "YYYYYYYYYYYYYYYYYYYLEN: " << 3 * circle_slices * (sphere_leyers+1) + 2 * 3 * circle_slices * sphere_leyers << "\n"; 
-
-index = 3 * circle_slices * (sphere_leyers+1);
-
-for(int l = 0; l < sphere_leyers; l++){
-    for (int i = 0; i<circle_slices; i++){
-        M3_indices[index++] = l*(circle_slices+1) + i + 1;
-        M3_indices[index++] = l*(circle_slices+1) + (i+1)%circle_slices + 1;
-        M3_indices[index++] = l*(circle_slices+1) + i + 1 + (circle_slices+1);
-        // std::cout << "indices:" << index - 3  << "  " << index - 2 << "  " << index - 1 << "\n";
-        // std::cout << "X: " << M3_indices[index - 3] << " - Y: " << M3_indices[index - 2] << " - Z:" << M3_indices[index - 1] << "\n";
+for(int i = 1; i <= sphere_leyers; i++){
+    for (int j = 0; j < circle_slices; j++){
+        M3_indices[index++] = i*circle_slices + j;
+        M3_indices[index++] = i*circle_slices + (j+1)%circle_slices;
+        M3_indices[index++] = (i-1)*circle_slices + (j+1)%circle_slices;
     }
-    // std::cout << "\n";
-}
-
-
-
-for(int l = 1; l <= sphere_leyers; l++){
-    for (int i = 0; i<circle_slices; i++){
-        M3_indices[index++] = l*(circle_slices+1) + i + 1;
-        M3_indices[index++] = l*(circle_slices+1) + (i+1)%circle_slices + 1;
-        M3_indices[index++] = (l-1)*(circle_slices+1) + (i+1)%circle_slices + 1;
-        // std::cout << "indices:" << index - 3  << "  " << index - 2 << "  " << index - 1 << "\n";
-        // std::cout << "X: " << M3_indices[index - 3] << " - Y: " << M3_indices[index - 2] << " - Z:" << M3_indices[index - 1] << "\n";
-    }
-    // std::cout << "\n";
 }
 
 

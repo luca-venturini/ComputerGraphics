@@ -72,8 +72,8 @@ vec3 Toon_Diffuse_BRDF(vec3 L, vec3 N, vec3 V, vec3 C, vec3 Cd, float thr) {
 	// additional parameters:
 	// vec3 Cd : color to be used in dark areas
 	// float thr : color threshold
-	if(dot(L, N) < thr/8){
-		return Cd/8;
+	if(dot(L, N) < 0.0f){
+		return vec3(0,0,0);
 	}
 	else if(dot(L, N) < thr){
 		return Cd;

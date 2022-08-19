@@ -23,7 +23,7 @@ glm::mat4 LookAtMat(glm::vec3 Pos, glm::vec3 aim, float Roll) {
 
 	glm::mat4 mc = glm::mat4(vx[0], vx[1], vx[2], .0, vy[0], vy[1], vy[2], .0, vz[0], vz[1], vz[2], .0, Pos[0], Pos[1], Pos[2], 1.0);
 
-	return inverse(mc*glm::rotate(glm::mat4(1.0), Roll, glm::vec3(0,0,1)));
+	return glm::rotate(glm::mat4(1.0), -Roll, glm::vec3(0,0,1))*inverse(mc);
 
 }
 
