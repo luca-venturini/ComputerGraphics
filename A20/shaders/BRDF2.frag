@@ -11,9 +11,7 @@ layout(binding = 1) uniform sampler2D texSampler;
 
 layout(binding = 2) uniform GlobalUniformBufferObject {
 	vec3 lightDir;
-    vec3 lightPos;
 	vec3 lightColor;
-    vec4 lightParams;
 	vec3 eyePos;
 } gubo;
 
@@ -21,17 +19,19 @@ layout(binding = 2) uniform GlobalUniformBufferObject {
 
 void main() {
 	vec3 N = normalize(fragNorm);
+
+
     vec3  specColor = vec3(1.0f, 1.0f, 1.0f);
     vec4 color = texture(texSampler, fragTexCoord);
     vec3  diffColor = color.rgb;
     float specularPower = 200.0f * color.a;
 
-    vec3 lightColorSpot = gubo.lightColor * clamp( (dot(normalize(gubo.lightPos - fragPos), gubo.lightDir ) - gubo.lightParams.y)/(gubo.lightParams.x - gubo.lightParams.y), 0.0f, 1.0f);
+    vec3 ambient = gubo.lightColor * diffColor;
 
-    vec3 diffuse  =  lightColorSpot * diffColor * clamp(dot(N,normalize(gubo.lightPos - fragPos)), 0.0f, 1.0f);
+    vec3 H = normalize(gubo.lightDir + normalize(gubo.eyePos - fragPos));
 
-    vec3 refl = -reflect(normalize(gubo.lightPos - fragPos), N);
-    vec3 phong = lightColorSpot * specColor * pow (clamp(dot(refl, normalize(gubo.eyePos - fragPos)), 0.0f, 1.0f), specularPower);
- 	
-	outColor = vec4(clamp(diffuse + phong, 0.0, 1.0), 1.0);
+    vec3 blinn = specColor * pow(clamp(dot(N, H), 0.0f, 1.0f), specularPower); 
+
+
+	outColor = vec4(clamp(gubo.lightColor * blinn, 0.0, 1.0) + ambient, 1.0);
 }
