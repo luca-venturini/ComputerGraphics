@@ -16,5 +16,4 @@ void main() {
 	if (gubo.time > 0.66){
 		outColor = vec4(0.1, 0.0, .3, 1.0f);
 	}
-	outColor = vec4(.5*cos(gubo.time), .5, 0.0, 1.0f);
 }

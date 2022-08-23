@@ -7,13 +7,9 @@ layout(set = 0, binding = 1) uniform GlobalUniformBufferObject {
 } gubo;
 
 void main() {
-	if (gubo.time <= 0.33){
-		outColor = vec4(.5, .5, 0.0, 1.0f);
-	}
-	if (gubo.time > 0.33 && gubo.time <= 0.66){
-		outColor = vec4(0.0, 1.0, 0.0, 1.0f);
-	}
-	if (gubo.time > 0.66){
-		outColor = vec4(0.1, 0.0, .3, 1.0f);
-	}
+	vec3 a = vec3(0.8, 0.5, 0.4);
+	vec3 b = vec3(0.2, 0.4, 0.2);
+	vec3 c = vec3(2.0, 1.0, 1.0);
+	vec3 d = vec3(0.00, 0.25, 0.25);
+	outColor = vec4(a + b*cos( 6.28318*(c*gubo.time+d)), 1.0 );
 }

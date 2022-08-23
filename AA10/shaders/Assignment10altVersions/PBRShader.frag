@@ -168,5 +168,5 @@ void main() {
 	color = color / (color + vec3(1.0));
 //	color = pow(color, vec3(1.0/2.2));
  	
-	outColor = vec4(clamp(color, 0.0, 1.0), 1.0);
+	outColor = vec4(clamp(vec3(1.0,1.0,1.0)-color, 0.0, 1.0), 1.0);
 }

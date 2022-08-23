@@ -288,7 +288,7 @@ cx = 0, cy = -0.5, cz = 0;
 PI = 3.1415;
 
 int index = 0;
-M3_vertices.resize(((circle_slices+1)*3)*(sphere_leyers+1));
+M3_vertices.resize((sphere_leyers+1)*circle_slices*3);
 
 
 for (int i = 0; i <= sphere_leyers; i++){
@@ -303,10 +303,10 @@ for (int i = 0; i <= sphere_leyers; i++){
     }
 }
 
-
+index = 0;
 // Resizes the indices array. Repalce the values with the correct number of
 // indices (3 * number of triangles)
- M3_indices.resize(3 * circle_slices * (sphere_leyers+1) + 2 * 3 * circle_slices * sphere_leyers);
+ M3_indices.resize(3 * circle_slices * sphere_leyers * 2);
 
 for(int i = 0; i < sphere_leyers; i++){
     for (int j = 0; j < circle_slices; j++){
@@ -351,33 +351,13 @@ for (int i = 0; i<M4Circles; i++){
     }
 }
 
-// // Vertices definitions
-// M4_vertices[0]  =  0.0;
-// M4_vertices[1]  =  1.414;
-// M4_vertices[2]  = -1.0;
-// M4_vertices[3]  =  0.0;
-// M4_vertices[4]  = -1.414;
-// M4_vertices[5]  = -1.0;
-// M4_vertices[6]  = -1.0;
-// M4_vertices[7]  =  0.0;
-// M4_vertices[8]  = -2.0;
-// M4_vertices[9]  = -1.0;
-// M4_vertices[10] =  0.0;
-// M4_vertices[11] =  0.0;
-// M4_vertices[12] =  1.0;
-// M4_vertices[13] =  0.0;
-// M4_vertices[14] =  0.0;
-// M4_vertices[15] =  1.0;
-// M4_vertices[16] =  0.0;
-// M4_vertices[17] = -2.0;
-
 
 // Resizes the indices array. Repalce the values with the correct number of
 // indices (3 * number of triangles)
 
 
 
-M4_indices.resize(2 * 3 * (M4Circles-1) * M4SlicesPerCircle + 6 * 3 * M4SlicesPerCircle);
+M4_indices.resize(2 * 3 * (M4Circles-1) * M4SlicesPerCircle + 2 * 3 * M4SlicesPerCircle);
 
 
 index = 0;

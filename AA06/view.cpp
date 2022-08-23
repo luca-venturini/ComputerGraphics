@@ -19,7 +19,7 @@ glm::mat4 LookAtMat(glm::vec3 Pos, glm::vec3 aim, float Roll) {
 	glm::vec3 up = glm::vec3(.0, 1.0, .0);
 	glm::vec3 vz = glm::normalize(glm::vec3(Pos-aim));
 	glm::vec3 vx = glm::normalize(glm::cross(up, vz));
-	glm::vec3 vy = glm::normalize(glm::cross(vz, vx));
+	glm::vec3 vy = glm::cross(vz, vx);
 
 	glm::mat4 mc = glm::mat4(vx[0], vx[1], vx[2], .0, vy[0], vy[1], vy[2], .0, vz[0], vz[1], vz[2], .0, Pos[0], Pos[1], Pos[2], 1.0);
 

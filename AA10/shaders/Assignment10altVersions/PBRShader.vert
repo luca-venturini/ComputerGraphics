@@ -19,5 +19,5 @@ layout(location = 3) out vec2 fragTexCoord;
 	fragPos = (ubo.mMat * vec4(inPosition, 1.0)).xyz;
 	fragNorm = mat3(ubo.nMat) * inNormal;
 	fragTan = vec4(mat3(ubo.nMat) * inTangent.xyz, inTangent.w);
-	fragTexCoord = inTexCoord;
+	fragTexCoord = vec2(1.0, 1.0) - inTexCoord;
 }
