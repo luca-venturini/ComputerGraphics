@@ -1,4 +1,5 @@
 // Create a matrix for Isometric projection with the given aspect ration a
+// rotation of ±45 o around the y-axis, followed by a rotation of ±35.26 o around the x-axis
 glm::mat4 PO1(float a) {
 	float w = 2;
 	float l=(-w), r=w, b=(-w)/a, t=w/a, n=-4, f=12;
@@ -11,6 +12,7 @@ glm::mat4 PO1(float a) {
 
 // Create a matrix for Dimnetric projection (alpha = 45 degree)
 // with the given aspect ration a
+// The angle between the x and y-axis is equal to the one between the y and z-axis, but different from the one between the z and x-axis
 glm::mat4 PO2(float a) {
 	float w = 2;
 	float l=(-w), r=w, b=(-w)/a, t=w/a, n=-4, f=12;
@@ -23,6 +25,7 @@ glm::mat4 PO2(float a) {
 
 // Create a matrix for Trimetric projection (alpha = 45 degree, beta = 60 degree)
 // with the given aspect ration a
+// All the angles between the projections of the axes are different
 glm::mat4 PO3(float a) {
 	float w = 2;
 	float l=(-w), r=w, b=(-w)/a, t=w/a, n=-4, f=12;
@@ -35,6 +38,7 @@ glm::mat4 PO3(float a) {
 
 // Create a matrix for Cabinet projection (alpha = 45)
 // with the given aspect ration a
+// In oblique projections rays are parallel, but oblique with respect to the projection plane.
 glm::mat4 PO4(float a) {
 	float w = 2;
 	float l=(-w), r=w, b=(-w)/a, t=w/a, n=-4, f=12;
