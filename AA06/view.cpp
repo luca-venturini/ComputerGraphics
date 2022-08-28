@@ -28,4 +28,11 @@ glm::mat4 LookAtMat(glm::vec3 Pos, glm::vec3 aim, float Roll) {
 }
 
 
+// glm::mat4 LookAtMat(glm::vec3 Pos, glm::vec3 aim, float Roll) {
+// 	glm::mat4 Mv = glm::lookAt(Pos,
+// 	aim,
+// 	glm::vec3(.0, 1.0, .0));
+// 	return glm::rotate(glm::mat4(1.0), -Roll, glm::vec3(0,0,1))*Mv;
+// }
+
 

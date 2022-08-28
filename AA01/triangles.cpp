@@ -25,3 +25,13 @@ Triangle(0.45, 0.3, 0.45, 0.4, 0.55, 0.3, 1, 1, 0);	// Right window
 Triangle(0.55, 0.4, 0.45, 0.4, 0.55, 0.3, 1, 1, 0);	// Right window
 Triangle(0.15, 0.3, 0.15, 0.4, 0.25, 0.3, 1, 1, 0);	// Left window
 Triangle(0.25, 0.4, 0.15, 0.4, 0.25, 0.3, 1, 1, 0);	// Left window
+
+int slices = 30;
+float alpha = 360;
+float radious = 0.1;
+for(int i = 0; i < slices; i++){
+    Triangle(0.65, -0.7, 
+    0.65 + radious*glm::cos(glm::radians(alpha/slices*i)), -0.7 + radious*glm::sin(glm::radians(alpha/slices*i)), 
+    0.65 + radious*glm::cos(glm::radians(alpha/slices*(i+1))), -0.7 + radious*glm::sin(glm::radians(alpha/slices*(i+1))),
+     237.0f/255.0f, 190.0f/255.0f, 36.0f/255.0f);
+}

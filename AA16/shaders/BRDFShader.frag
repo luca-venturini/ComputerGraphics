@@ -85,7 +85,7 @@ vec3 Toon_Specular_BRDF(vec3 L, vec3 N, vec3 V, vec3 C, float thr)  {
 	// Directional light direction
 	// additional parameter:
 	// float thr : color threshold
-	if(dot(V, -reflect(L, N)) > thr){
+	if(dot(V, -reflect(L, N)) >= thr){
 		return C;
 	}
 	return vec3(0,0,0);

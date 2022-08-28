@@ -45,8 +45,8 @@ glm::mat4 PO4(float a) {
 	glm::mat4 scale = glm::scale(glm::mat4(1.0), glm::vec3(1, -1, 1));
 	glm::mat4 ort = glm::ortho(l, r, b, t, n, f);
 	glm::mat4 shear = glm::mat4(1.0);
-	shear[2][0] = -(0.5)*cos(45);
-	shear[2][1] = -(0.5)*sin(45);
+	shear[2][0] = -(0.5)*cos(glm::radians(45.0f));
+	shear[2][1] = -(0.5)*sin(glm::radians(45.0f));
 	return scale*ort*shear;
 }
 

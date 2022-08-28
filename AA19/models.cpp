@@ -12,29 +12,6 @@ std::vector<Vertex> M2_vertices;
 
 
 void makeModels() {
-//// M1 : Cube
-// M1_vertices.resize(4);
-
-// // first vertex of M1
-// M1_vertices[0].pos  = glm::vec3(-1.0,-1.0,-1.0);
-// M1_vertices[0].norm = glm::vec3(0.0,0.0,1.0);
-// M1_vertices[0].UV   = glm::vec2(0.0,1.0);
-
-// // second vertex of M1
-// M1_vertices[1].pos  = glm::vec3(1.0,-1.0,-1.0);
-// M1_vertices[1].norm = glm::vec3(0.0,0.0,1.0);
-// M1_vertices[1].UV   = glm::vec2(1.0,1.0);
-
-// // third vertex of M1
-// M1_vertices[2].pos  = glm::vec3(1.0,1.0,-1.0);
-// M1_vertices[2].norm = glm::vec3(0.0,0.0,1.0);
-// M1_vertices[2].UV   = glm::vec2(1.0,0.0);
-
-// // fourth vertex of M1
-// M1_vertices[3].pos  = glm::vec3(-1.0,1.0,-1.0);
-// M1_vertices[3].norm = glm::vec3(0.0,0.0,1.0);
-// M1_vertices[3].UV   = glm::vec2(0.0,0.0);
-
 M1_vertices.resize(4*6);
 
 
@@ -170,17 +147,7 @@ M1_vertices[23].UV   = glm::vec2(0.125,0.5);
 
 // Resizes the indices array. Repalce the values with the correct number of
 // indices (3 * number of triangles)
-// M1_indices.resize(3 * 2);
 
-// // first triangle
-// M1_indices[0] = 0;
-// M1_indices[1] = 1;
-// M1_indices[2] = 2;
-
-// // second triangle
-// M1_indices[3] = 2;
-// M1_indices[4] = 3;
-// M1_indices[5] = 0;
 M1_indices.resize(6 * 6);
 
 

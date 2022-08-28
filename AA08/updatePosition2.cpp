@@ -6,14 +6,10 @@ glm::mat4 MakeWorldEuler(glm::vec3 pos, float yaw, float pitch, float roll) {
 	return out;
 }
 
-glm::mat4 getRotation(glm::vec3 *pos, float yaw, float pitch, float roll, float mu, float dt, float mx, float my, float mz){
+glm::mat4 getRotation(glm::vec3 *pos, float yaw, float pitch, float roll, float mu, float dt){
 
-    glm::vec3 ux = glm::vec3(1,0,0);
-    glm::vec3 uy = glm::vec3(0,1,0);
-    glm::vec3 uz = glm::vec3(0,0,1);
-	*pos += ux * mu * dt * mx;
-    *pos += uy * mu * dt * my;
-    *pos += uz * mu * dt * mz;
+	glm::vec3 u = glm::vec3(glm::rotate(glm::mat4(1),(float)glm::radians(yaw), glm::vec3(0,1,0)) *glm::vec4(1,0,0,1));
+	*pos += u * mu * dt;
 	return MakeWorldEuler(*pos, yaw, pitch, roll);
 }
 
@@ -36,19 +32,19 @@ glm::mat4 getRobotWorldMatrix(GLFWwindow* window) {
 
 	if(glfwGetKey(window, GLFW_KEY_D)){
 		yaw = 0.0;
-		out = getRotation(&pos, yaw, pitch, roll, mu, dt, 1, 0, 0);
+		out = getRotation(&pos, yaw, pitch, roll, mu, dt);
 	}
 	else if(glfwGetKey(window, GLFW_KEY_W)){
 		yaw = 90.0;
-		out = getRotation(&pos, yaw, pitch, roll, mu, dt, 0, 0, -1);
+		out = getRotation(&pos, yaw, pitch, roll, mu, dt);
 	}
 	else if(glfwGetKey(window, GLFW_KEY_A)){
 		yaw = 180.0;
-		out = getRotation(&pos, yaw, pitch, roll, mu, dt, -1, 0, 0);
+		out = getRotation(&pos, yaw, pitch, roll, mu, dt);
 	}
 	else if(glfwGetKey(window, GLFW_KEY_S)){
 		yaw = 270.0;
-		out = getRotation(&pos, yaw, pitch, roll, mu, dt, 0, 0, 1);
+		out = getRotation(&pos, yaw, pitch, roll, mu, dt);
 	}
 	else{
 		out = MakeWorldEuler(pos, yaw, pitch, roll);
